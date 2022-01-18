@@ -35,7 +35,7 @@ public class Administrador extends Persona implements Interface {
     
     public boolean cambiarUsername(String nuevoUsername) {
         if (nuevoUsername.length() >= 4 && nuevoUsername.length() <= 8) {
-            this.password = nuevoUsername;
+            this.username = nuevoUsername;
             return true;
         }
 

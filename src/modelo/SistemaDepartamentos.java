@@ -25,8 +25,9 @@ public class SistemaDepartamentos {
             }
 
             if (menu == 1) {
-                username = input("Ingrese su username: ");
-                password = input("Ingrese su contrasenia: ");
+                username = input("\tIngrese su username: ");
+                password = input("\tIngrese su contrasenia: ");
+                System.out.println("");
                 if (admin.verificarUserPassword(username, password)) {
                     while (true) {
                         submenu = menuAdmin();
@@ -42,6 +43,7 @@ public class SistemaDepartamentos {
             } else {
                 username = input("Ingrese su username: ");
                 password = input("Ingrese su contrasenia: ");
+                System.out.println("");
 
                 Propietario currentProp = null;
 
@@ -77,6 +79,7 @@ public class SistemaDepartamentos {
         System.out.println("\t1. Administrador");
         System.out.println("\t2. Propietario");
         System.out.println("\t3. Salir");
+        System.out.print("Opcion: ");
 
         return Integer.parseInt(leerDatos());
     }
@@ -89,7 +92,8 @@ public class SistemaDepartamentos {
         System.out.println("\t4. Ver informacion de departamento");
         System.out.println("\t5. Asignar propietario a departamento");
         System.out.println("\t6. Volver");
-
+        System.out.print("Opcion: ");
+        
         return Integer.parseInt(leerDatos());
     }
 
@@ -99,6 +103,7 @@ public class SistemaDepartamentos {
         System.out.println("\t2. Ver quiene estan en el departamento");
         System.out.println("\t3. Ver informacion del departamento");
         System.out.println("\t4. Volver");
+        System.out.print("Opcion: ");
 
         return Integer.parseInt(leerDatos());
     }
@@ -115,7 +120,7 @@ public class SistemaDepartamentos {
     }
 
     public static void seleccionSubmenuAdmin(int submenu) {
-        String password, username, piso, capacidad, tipo;
+        String password, username;
         int index;
 
         switch (submenu) {
@@ -157,6 +162,7 @@ public class SistemaDepartamentos {
                 crearPropietario();
                 System.out.println("QUE DEPARTAMENTO LE DESEA ASIGNAR?");
                 mostrarDepartamentos();
+                System.out.print("Opcion: ");
                 index = Integer.parseInt(leerDatos());
                 departamentos.get(index).anadirPropietarios(propietarios.get(propietarios.size() - 1));
                 propietarios.get(propietarios.size() - 1).setDepartamentoID(departamentos.get(index).getID());
@@ -230,7 +236,7 @@ public class SistemaDepartamentos {
     public static void mostrarDepartamentos() {
         System.out.println("");
         for (int i = 0; i < departamentos.size(); i++) {
-            System.out.println(i + ". " + departamentos.get(i).getID());
+            System.out.println(i + "._ " + departamentos.get(i).getID());
         }
     }
 }

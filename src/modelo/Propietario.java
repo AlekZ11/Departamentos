@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package modelo;
 
 /**
@@ -9,20 +6,32 @@ package modelo;
  * @author alekz
  */
 public class Propietario extends Persona implements Interface {
-    private String user;
-    private int password;
+    private String username;
+    private String password;
+    private String departamentoID;
 
-    public Propietario(String user, int password, String nombres, int cedula) {
-        super(nombres, cedula);
-        this.user = user;
-        this.password = password;
+    public void setDepartamentoID(String departamentoID) {
+        this.departamentoID = departamentoID;
+    }
+
+    public String getDepartamentoID() {
+        return departamentoID;
+    }
+    
+    public Propietario(String nombres, String apellidos, String cedula) {
+        super(nombres, apellidos, cedula);
+        //por default sera el primer nombre
+        this.username = username = nombres.split(" ")[0]; 
+        //por default sera la cedula
+        this.password = cedula; 
+    }
+
+    public String getUsername() {
+        return username;
     }
     
     @Override
-    public int verificarUserPassword (String user, int password) {
-        if(user.equals(this.user) && (password == this.password)){
-            return 2;
-        }
-        return 0;
+    public boolean verificarUserPassword(String username, String password) {
+        return username.equals(this.username) && (password.equals(this.password));
     }
 }

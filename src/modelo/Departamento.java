@@ -1,29 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
  * @author alekz
  */
 public class Departamento {
-    private int id;
-    private int numeroPiso;
-    private int password;
-    private int capacidad;
-    ArrayList <Propietario> propietarios = new ArrayList();
-    private String tipo;
 
-    public Departamento(int numeroPiso, int password, int capacidad, String tipo, int id) {
-        this.numeroPiso = numeroPiso;
-        this.password = password;
+    private String ID;
+    private int piso;
+    private String password = "secret1234";
+    private int capacidad;
+    private ArrayList<Propietario> propietarios = new ArrayList();
+    private ArrayList<Propietario> presentes = new ArrayList();
+    private String tipo;
+    private int aux = 0;
+
+    public void anadirPropietarios(Propietario propietario) {
+        this.propietarios.add(propietario);
+    }
+
+    private String generaId() {
+        Date currentDate = new Date();
+
+        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+        String dateTime = ft.format(currentDate);
+
+        return dateTime;
+    }
+
+    public Departamento(int piso, int capacidad, String tipo) {
+        this.piso = piso;
         this.capacidad = capacidad;
         this.tipo = tipo;
-        this.id = id;
+        this.ID = generaId() + String.valueOf(this.aux++);
     }
 
     public void setPropietario(Propietario propietario, int i) {
@@ -34,11 +47,47 @@ public class Departamento {
         return capacidad;
     }
 
-    public int getPassword() {
-        return password;
+    public String getID() {
+        return ID;
     }
-    
-    public void getInformacion(){
-        System.out.println("\tId: " + id + "\n\tPiso: " + numeroPiso + "\n\tCapacidad: " + capacidad);
+
+    public ArrayList<Propietario> getPresentes() {
+        return presentes;
+    }
+
+    public void entrar(Propietario propietario) {
+        presentes.add(propietario);
+    }
+
+    public String presentesDetail() {
+        String info = "";
+
+        if (!propietarios.isEmpty()) {
+            for (int i = 0; i < propietarios.size(); i++) {
+                info += "\n\t" + propietarios.get(i).nombresCompletos();
+            }
+        } else {
+            info += "No hay nadie en el departamento";
+        }
+
+        return info;
+    }
+
+    public String departamentoDetail() {
+        String info = "";
+        info += "\tDEPARTAMENTO " + this.ID;
+        info += "\nPiso: " + this.piso;
+        info += "\nCapacidad:" + this.capacidad;
+        info += "\nTipo: " + this.tipo;
+        info += "\nPropietarios:";
+        if (propietarios.isEmpty()) {
+            info += "\n\tNo hay propietarios";
+        } else {
+            for (int i = 0; i < propietarios.size(); i++) {
+                info += "\n\t" + propietarios.get(i).nombresCompletos();
+            }
+        }
+
+        return info;
     }
 }

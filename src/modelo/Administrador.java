@@ -1,27 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
 /**
  *
- * @author alekz
+ * @author alekz y codaya007 xd
  */
-public class Administrador implements Interface{
-    private String user;
-    private int password;
+public class Administrador extends Persona implements Interface {
 
-    public Administrador(String user, int password) {
-        this.user = user;
-        this.password = password;
+    private String username = "admin123";
+    //debe tener de 6 a 10 caracteres
+    private String password;
+
+    public Administrador(String nombres, String apellidos, String cedula) {
+        super(nombres, apellidos, cedula);
+        this.password = cedula;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     @Override
-    public int verificarUserPassword (String user, int password) {
-        if(user.equals(this.user) && (password == this.password)){
-            return 1;
+    public boolean verificarUserPassword(String username, String password) {
+        return username.equals(this.username) && (password.equals(this.password));
+    }
+
+    public boolean cambiarContrasenia(String nuevaContrasenia) {
+        if (nuevaContrasenia.length() >= 6 && nuevaContrasenia.length() <= 10) {
+            this.password = nuevaContrasenia;
+            return true;
         }
-        return 0;
+
+        return false;
+    }
+    
+    public boolean cambiarUsername(String nuevoUsername) {
+        if (nuevoUsername.length() >= 4 && nuevoUsername.length() <= 8) {
+            this.password = nuevoUsername;
+            return true;
+        }
+
+        return false;
     }
 }

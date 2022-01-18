@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package modelo;
 
 import java.util.ArrayList;
@@ -13,106 +9,228 @@ import java.util.Scanner;
  */
 public class SistemaDepartamentos {
 
-    /**
-     * @param args the command line arguments
-     */
+    static Administrador admin = new Administrador("Viviana Isabel", "Calva Tuza", "1234567890");
+
+    static ArrayList<Propietario> propietarios = new ArrayList();
+    static ArrayList<Departamento> departamentos = new ArrayList();
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Administrador admin = new Administrador("admin",12345);
-        ArrayList <Propietario> propietarios = new ArrayList();
-        ArrayList <Departamento> departamentos = new ArrayList();
-        int password = 0;
-        String user; 
-        int opcion = 0;
-        char c = 's';
-        do{
-        do{
-            System.out.print("Ingrese su usuario:  ");
-            user = sc.nextLine();
-            System.out.print("Ingrese su contrasena:  ");
-            try {
-                password = sc.nextInt();
-            } catch (Exception e) {
-                System.out.println("La contrasena ingresada debe ser numeros");
-                sc.nextLine();
+        String username = "", password = "";
+        int menu, submenu;
+
+        while (true) {
+            menu = Menu();
+            if (menu == 3) {
+                break;
             }
-            opcion = admin.verificarUserPassword(user, password);
-            if (opcion != 1){
-                for (Propietario p : propietarios) {
-                    opcion = p.verificarUserPassword(user, password);
-                    if(opcion == 2){
-                        break;
+
+            if (menu == 1) {
+                username = input("Ingrese su username: ");
+                password = input("Ingrese su contrasenia: ");
+                if (admin.verificarUserPassword(username, password)) {
+                    while (true) {
+                        submenu = menuAdmin();
+                        if (submenu == 6) {
+                            break;
+                        }
+                        seleccionSubmenuAdmin(submenu);
+                    }
+                } else {
+                    //System.out.println(username + " " + password);
+                    System.out.println("No está autorizadx para este rol");
+                }
+            } else {
+                username = input("Ingrese su username: ");
+                password = input("Ingrese su contrasenia: ");
+
+                Propietario currentProp = null;
+
+                for (int i = 0; i < propietarios.size(); i++) {
+                    if (propietarios.get(i).getUsername().equals(username)) {
+                        currentProp = propietarios.get(i);
                     }
                 }
-            }
-        }while(password == 0 && opcion == 0);
-        switch (opcion) {
-            case 1:
-                int opcion2 = 0; 
-                do {
-                    System.out.println("  ===  Menu de Opciones Administrador  ===");
-                    System.out.print("\t1.Crear Departamento\n\t2.Crear y asignar Propietarios\n\t3.Salir\nOpcion:  ");
-                    opcion2 = sc.nextInt();
-                    switch (opcion2) {
-                        case 1:
-                            System.out.println("Ingrese los siguientes datos del departamento");
-                            System.out.print("Numero de Piso:  ");
-                            int piso = sc.nextInt();
-                            System.out.print("Contrasena para Propietarios(Numeros):  ");
-                            int password2 = sc.nextInt();
-                            System.out.print("Capacidad:  ");
-                            int capacidad = sc.nextInt();
-                            System.out.print("Id:  ");
-                            int id = sc.nextInt();
-                            sc.nextLine();
-                            System.out.print("Tipo:  ");
-                            String tipo = sc.nextLine();
-                            departamentos.add(new Departamento(piso,password2,capacidad,tipo,id));
-                            break;
-                        case 2:
-                            System.out.println("Departamentos Disponibles");
-                            int i = 0;
-                            for (Departamento d : departamentos) {
-                                System.out.println(" --- Departamento " + i + " ---");
-                                d.getInformacion();
+
+                if (currentProp != null) {
+                    if (currentProp.verificarUserPassword(username, password)) {
+                        while (true) {
+                            submenu = menuProp();
+                            if (submenu == 4) {
+                                break;
                             }
-                            System.out.print("Ingrese el numero del departamento: ");
-                            int opcion3 = sc.nextInt();
-                            int aux = 1;
-                            do{
-                                System.out.print("Ingrese la cantidad de propietarios a asignar al departamento: ");
-                                aux = sc.nextInt();
-                            }while(aux > departamentos.get(opcion3).getCapacidad());
-                            sc.nextLine();
-                            for (int j = 0; j < aux; j++) {  
-                                System.out.println("Ingrese los siguientes datos del Propietario");
-                                System.out.print("Nombres:  ");
-                                String nombres = sc.nextLine();
-                                System.out.print("Cedula:  ");
-                                int cedula = sc.nextInt();
-                                sc.nextLine();
-                                System.out.print("Usuario:  ");
-                                String usuario = sc.nextLine();
-                                int password3 = departamentos.get(opcion3).getPassword();
-                                propietarios.add(new Propietario(usuario, password3, nombres, cedula));
-                                //departamentos.get(opcion3).setPropietario(propietarios.get(j), j); Me sale un error no se cual sera ni como solucionarlo
-                            }
-                            break;
-                        default:
-                            break;
+                            seleccionSubmenuProp(submenu, currentProp);
+                        }
+                    } else {
+                        System.out.println("No está autorizadx para este rol");
                     }
-                } while (opcion2 != 3);
+                } else {
+                    System.out.println("Ningun usuario coincide con sus credenciales");
+                }
+
+            }
+        }
+
+    }
+
+    public static int Menu() {
+        System.out.println(" ================= Cual es su rol =================");
+        System.out.println("\t1. Administrador");
+        System.out.println("\t2. Propietario");
+        System.out.println("\t3. Salir");
+
+        return Integer.parseInt(leerDatos());
+    }
+
+    public static int menuAdmin() {
+        System.out.println(" ================= Que desea hacer =================");
+        System.out.println("\t1. Cambiar contrasenia");
+        System.out.println("\t2. Cambiar username ");
+        System.out.println("\t3. Crear nuevo departamento");
+        System.out.println("\t4. Ver informacion de departamento");
+        System.out.println("\t5. Asignar propietario a departamento");
+        System.out.println("\t6. Volver");
+
+        return Integer.parseInt(leerDatos());
+    }
+
+    public static int menuProp() {
+        System.out.println(" ================= Que desea hacer =================");
+        System.out.println("\t1. Ingresar al departamento");
+        System.out.println("\t2. Ver quiene estan en el departamento");
+        System.out.println("\t3. Ver informacion del departamento");
+        System.out.println("\t4. Volver");
+
+        return Integer.parseInt(leerDatos());
+    }
+
+    public static String leerDatos() {
+        Scanner e = new Scanner(System.in);
+
+        return e.nextLine();
+    }
+
+    public static String input(String text) {
+        System.out.print(text);
+        return leerDatos();
+    }
+
+    public static void seleccionSubmenuAdmin(int submenu) {
+        String password, username, piso, capacidad, tipo;
+        int index;
+
+        switch (submenu) {
+            case 1:
+                System.out.print("Nueva contrasenia: ");
+                password = leerDatos();
+                if (admin.cambiarContrasenia(password)) {
+                    System.out.println("Se ha cambiado la contrasena");
+                } else {
+                    System.out.println("Ha ocurrido un error");
+                }
                 break;
             case 2:
-                System.out.println("Contrasena y usuarios correctos. BIENVENIDO");
+                System.out.print("Nuevo username: ");
+                username = leerDatos();
+                if (admin.cambiarUsername(username)) {
+                    System.out.println("Se ha cambiado el username");
+                } else {
+                    System.out.println("Ha ocurrido un error");
+                }
                 break;
-            default:
+            case 3:
+                crearDepartamento();
+                break;
+            case 4:
+                if (!departamentos.isEmpty()) {
+                    System.out.println("\nINFORMACION DE LOS DEPARTAMENTOS:");
+                    System.out.println("De que departamento desea ver su informacion?");
+                    mostrarDepartamentos();
+                    System.out.print("Opcion: ");
+                    index = Integer.parseInt(leerDatos());
+                    System.out.println(departamentos.get(index).departamentoDetail());;
+                } else {
+                    System.out.println("Aun no hay departamentos por mostrar");
+                }
+                break;
+            case 5:
+                System.out.println("PRIMERO CREAREMOS AL PROPIETARIO");
+                crearPropietario();
+                System.out.println("QUE DEPARTAMENTO LE DESEA ASIGNAR?");
+                mostrarDepartamentos();
+                index = Integer.parseInt(leerDatos());
+                departamentos.get(index).anadirPropietarios(propietarios.get(propietarios.size() - 1));
+                propietarios.get(propietarios.size() - 1).setDepartamentoID(departamentos.get(index).getID());
                 break;
         }
-        System.out.print("Desea salir del programa (S/N):  ");
-        c = sc.next().charAt(0);
-        sc.nextLine();
-        }while(c != 's' || c != 'S');
     }
-    
+
+    public static void seleccionSubmenuProp(int submenu, Propietario prop) {
+        Departamento departamento;
+        departamento = getDepartamentoByID(prop.getDepartamentoID());
+
+        if (departamento != null) {
+            switch (submenu) {
+                case 1:
+                    departamento.entrar(prop);
+
+                    break;
+                case 2:
+                    System.out.println(departamento.presentesDetail());
+                    break;
+                case 3:
+                    System.out.println(departamento.departamentoDetail());
+                    ;
+                    break;
+            }
+        } else {
+            System.out.println("Ooops! Parece que no tiene un departamento");
+        }
+
+    }
+
+    public static Departamento getDepartamentoByID(String ID) {
+        Departamento current = null;
+
+        for (int i = 0; i < departamentos.size(); i++) {
+            if (departamentos.get(i).getID().equals(ID)) {
+                current = departamentos.get(i);
+            }
+        }
+
+        return current;
+    }
+
+    public static void crearDepartamento() {
+        String tipo;
+        int capacidad, piso;
+
+        System.out.print("Piso:");
+        piso = Integer.parseInt(leerDatos());
+        System.out.print("Capacidad:");
+        capacidad = Integer.parseInt(leerDatos());
+        System.out.print("Tipo:");
+        tipo = leerDatos();
+
+        departamentos.add(new Departamento(piso, capacidad, tipo));
+    }
+
+    public static void crearPropietario() {
+        String nombres, apellidos, cedula;
+
+        System.out.print("Nombres:");
+        nombres = leerDatos();
+        System.out.print("Apellidos:");
+        apellidos = leerDatos();
+        System.out.print("Cedula:");
+        cedula = leerDatos();
+
+        propietarios.add(new Propietario(nombres, apellidos, cedula));
+    }
+
+    public static void mostrarDepartamentos() {
+        System.out.println("");
+        for (int i = 0; i < departamentos.size(); i++) {
+            System.out.println(i + ". " + departamentos.get(i).getID());
+        }
+    }
 }

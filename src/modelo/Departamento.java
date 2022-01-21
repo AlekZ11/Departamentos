@@ -12,7 +12,7 @@ public class Departamento {
 
     private String ID;
     private int piso;
-    private String password = "secret1234";
+    //private String password = "secret1234";
     private int capacidad;
     private ArrayList<Propietario> propietarios = new ArrayList();
     private ArrayList<Propietario> presentes = new ArrayList();
@@ -62,9 +62,9 @@ public class Departamento {
     public String presentesDetail() {
         String info = "";
 
-        if (!propietarios.isEmpty()) {
-            for (int i = 0; i < propietarios.size(); i++) {
-                info += "\n\t" + propietarios.get(i).nombresCompletos();
+        if (!presentes.isEmpty()) {
+            for (int i = 0; i < presentes.size(); i++) {
+                info += "\n\t" + presentes.get(i).nombresCompletos();
             }
         } else {
             info += "No hay nadie en el departamento";

@@ -93,7 +93,7 @@ public class SistemaDepartamentos {
         System.out.println("\t5. Asignar propietario a departamento");
         System.out.println("\t6. Volver");
         System.out.print("Opcion: ");
-        
+
         return Integer.parseInt(leerDatos());
     }
 
@@ -158,14 +158,21 @@ public class SistemaDepartamentos {
                 }
                 break;
             case 5:
-                System.out.println("PRIMERO CREAREMOS AL PROPIETARIO");
-                crearPropietario();
-                System.out.println("QUE DEPARTAMENTO LE DESEA ASIGNAR?");
-                mostrarDepartamentos();
-                System.out.print("Opcion: ");
-                index = Integer.parseInt(leerDatos());
-                departamentos.get(index).anadirPropietarios(propietarios.get(propietarios.size() - 1));
-                propietarios.get(propietarios.size() - 1).setDepartamentoID(departamentos.get(index).getID());
+                if (!departamentos.isEmpty()) {
+                    System.out.println("\tPRIMERO CREAREMOS AL PROPIETARIO");
+                    crearPropietario();
+                    System.out.println("\tCREDENCIALES PARA EL NUMERO PROPIETARIO:");
+                    System.out.println(propietarios.get(propietarios.size()-1).getUsername());
+                    System.out.println(propietarios.get(propietarios.size()-1).getPassword());
+                    System.out.println("\nQUE DEPARTAMENTO LE DESEA ASIGNAR?");
+                    mostrarDepartamentos();
+                    System.out.print("Opcion: ");
+                    index = Integer.parseInt(leerDatos());
+                    departamentos.get(index).anadirPropietarios(propietarios.get(propietarios.size() - 1));
+                    propietarios.get(propietarios.size() - 1).setDepartamentoID(departamentos.get(index).getID());
+                } else {
+                    System.out.println("Primero cree departamentos");
+                }
                 break;
         }
     }
@@ -178,7 +185,6 @@ public class SistemaDepartamentos {
             switch (submenu) {
                 case 1:
                     departamento.entrar(prop);
-
                     break;
                 case 2:
                     System.out.println(departamento.presentesDetail());

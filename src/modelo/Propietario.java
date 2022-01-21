@@ -18,6 +18,10 @@ public class Propietario extends Persona implements Interface {
         return departamentoID;
     }
     
+    public String getPassword() {
+        return password;
+    }
+    
     public Propietario(String nombres, String apellidos, String cedula) {
         super(nombres, apellidos, cedula);
         //por default sera el primer nombre
